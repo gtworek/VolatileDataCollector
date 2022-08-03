@@ -5,17 +5,17 @@ And it is why I have created my own tool for it.
 
 It dumps:
 - OS details (user name, machine name, version)
-- process details (PID, name, PPID, path, cmdline, Thread count, iocount, times)
+- Process details (PID, name, PPID, path, cmdline, Thread count, iocount, times)
 - Loaded DLLs
 - Drivers
 - Environment
 - Root certs (thumbnail and name, for user and machine)
 - Open handles (open files, open registry entries etc.)
-- ARP Cache
-- IP Configuration
-- DNS Cache
-- Active TCP/IP Connections (addresses, ports, PID, time of establishing)
-- Active Logons
+- ARP cache
+- IP configuration
+- DNS cache
+- Active TCP/IP connections (addresses, ports, PID, time of establishing)
+- Active logons
 - Kernel memory
 
 

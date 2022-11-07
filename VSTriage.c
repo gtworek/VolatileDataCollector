@@ -54,7 +54,7 @@ PWSTR MyComputerName(void)
 {
 	PWSTR pwszData;
 	DWORD dwChars = MAX_PATH; //overkill but works
-	CRASHORALLOC(pwszData, dwChars * sizeof(WCHAR));
+	ALLOCORCRASH(pwszData, dwChars * sizeof(WCHAR));
 	GetComputerNameExW(ComputerNamePhysicalNetBIOS, pwszData, &dwChars);
 	return pwszData;
 }
@@ -190,15 +190,16 @@ int wmain(int argc, WCHAR** argv, WCHAR** envp)
 	InsertAtOutputTail(HNM_Output());
 	InsertAtOutputTail(TLV_Output());
 	InsertAtOutputTail(TLM_Output());
+	InsertAtOutputTail(TLM2_Output());
 	InsertAtOutputTail(DRV_Output());
 	InsertAtOutputTail(SET_Output());
 	InsertAtOutputTail(CUSR_Output());
 	InsertAtOutputTail(HND_Output());
 	InsertAtOutputTail(ARPA_Output());
 	InsertAtOutputTail(ICOA_Output());
-	InsertAtOutputTail(ICOD_Output()); 
+	InsertAtOutputTail(ICOD_Output());
 	InsertAtOutputTail(NANO_Output());
-	InsertAtOutputTail(KLS_Output()); 
+	InsertAtOutputTail(KLS_Output());
 
 	bRes = SaveReport(wszOutputFileName, pnReportHead);
 	if (!bRes)

@@ -3,8 +3,7 @@
 PWSTR pwszTlmBuf = NULL;
 size_t stTlmBufSize;
 
-//todo: IsWow64Process2 for non-win7build
-
+//todo: IsWow64Process2 w define win7build
 BOOL IsProcesWoW(HANDLE hProcess)
 {
 	BOOL bIsWow64 = FALSE;

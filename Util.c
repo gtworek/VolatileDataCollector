@@ -33,8 +33,8 @@ VOID SortUniqueMultilineWchar(PWSTR pwszStringToSort, PWSTR* pwszSortedString)
 
 	stStringSizeBytes = LocalSize(pwszStringToSort);
 
-	CRASHORALLOC(ppwstrLines, sizeof(PWSTR) * dwMaxLines);
-	CRASHORALLOC(pwszNewString, stStringSizeBytes);
+	ALLOCORCRASH(ppwstrLines, sizeof(PWSTR) * dwMaxLines);
+	ALLOCORCRASH(pwszNewString, stStringSizeBytes);
 
 	wcToken = wcstok_s(pwszStringToSort, seps, &next_token);
 

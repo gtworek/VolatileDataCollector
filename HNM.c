@@ -61,7 +61,8 @@ BOOL HNMMain(void)
 	BOOL bRes;
 	DWORD dwChars;
 
-	CRASHORALLOC(pwszTemp, stTempWchars * sizeof(WCHAR));
+	ALLOCORCRASH(pwszTemp, stTempWchars * sizeof(WCHAR));
+	//CRASHORALLOC(pwszData, stDataSize);
 	pwszData = LocalAlloc(LPTR, stDataSize);
 	CRASHIFNULLALLOC(pwszData);
 

@@ -170,6 +170,32 @@ BOOL HNMMain(void)
 	}
 #endif
 
+	SYSTEM_TIMEOFDAY_INFORMATION systemTimeOfDayInfo = {0};
+	NTSTATUS status;
+
+	status = NtQuerySystemInformation(
+		SystemTimeOfDayInformation,
+		&systemTimeOfDayInfo,
+		sizeof(SYSTEM_TIMEOFDAY_INFORMATION),
+		NULL);
+	if (STATUS_SUCCESS == status)
+	{
+		StringCchCatW(pwszHNMBuf, stHNMBufSize / sizeof(WCHAR), L"Times:\r\n");
+
+		SYSTEMTIME stBootTime = {0};
+		PWSTR pwszBootTimestamp;
+		FileTimeToSystemTime((FILETIME*)&(systemTimeOfDayInfo.BootTime.QuadPart), &stBootTime);
+		pwszBootTimestamp = SystemTimeToISO8601(stBootTime);
+
+		StringCchPrintfW(
+			pwszTemp,
+			stTempWchars,
+			L"\tBoot: %s",
+			pwszBootTimestamp);
+		StringCchCatW(pwszHNMBuf, stHNMBufSize / sizeof(WCHAR), pwszTemp);
+		LocalFree(pwszBootTimestamp);
+	}
+
 	LocalFree(pwszData);
 	LocalFree(pwszTemp);
 	return TRUE;

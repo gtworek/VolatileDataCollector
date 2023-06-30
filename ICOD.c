@@ -130,7 +130,8 @@ GetDnsCachedData(
 	__in IN WORD Type
 )
 {
-	PDNS_RECORD DnsRecord = NULL;
+	PDNS_RECORD DnsRecord;
+	PDNS_RECORD DnsRecordHead = NULL;
 	DNS_STATUS DnsStatus;
 
 	DnsStatus = DnsQuery_W(
@@ -139,8 +140,10 @@ GetDnsCachedData(
 		DNS_QUERY_CACHE_ONLY | DNS_QUERY_CACHE_NO_FLAGS_MATCH | DNS_QUERY_NO_HOSTS_FILE,
 		// | DNS_QUERY_NO_HOSTS_FILE, // nicer, but ipconfig does not use it.
 		NULL,
-		&DnsRecord,
+		&DnsRecordHead,
 		NULL);
+	
+	DnsRecord = DnsRecordHead;
 
 	if (DnsStatus != NO_ERROR)
 	{
@@ -164,6 +167,7 @@ GetDnsCachedData(
 		default:
 			wprintf(L"ERROR: Unknown Error. %s\r\n", Name);
 		}
+		DnsRecordListFree(DnsRecordHead, TRUE);
 		return FALSE;
 	}
 
@@ -254,7 +258,7 @@ GetDnsCachedData(
 		LocalFree(pwszDnsRecordTempBuf);
 		DnsRecord = DnsRecord->pNext;
 	}
-	DnsRecordListFree(DnsRecord, TRUE);
+	DnsRecordListFree(DnsRecordHead, TRUE);
 
 	StringCchCatW(pwszICODBuf, stICODBufSize, pwszAllRecordsDataBuf);
 

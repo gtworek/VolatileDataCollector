@@ -372,6 +372,7 @@ typedef struct _PROCESS_BASIC_INFORMATION
 
 typedef enum _SYSTEM_INFORMATION_CLASS
 {
+	SystemTimeOfDayInformation = 3,
 	SystemProcessInformation = 5,
 	SystemHandleInformation = 16,
 	SystemExtendedHandleInformation = 0x40,

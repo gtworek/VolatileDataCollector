@@ -732,6 +732,30 @@ typedef struct _SYSTEM_TIMEOFDAY_INFORMATION
 } SYSTEM_TIMEOFDAY_INFORMATION, *PSYSTEM_TIMEOFDAY_INFORMATION;
 
 
+typedef struct _MY_AUTH_ELEMENT
+{
+	ULONG Size;
+	ULONG Version;
+	ULONG Flags;
+	ULONG Type;
+	BYTE Data[ANYSIZE_ARRAY];
+} MY_AUTH_ELEMENT, * PMY_AUTH_ELEMENT;
+
+typedef struct _MY_AUTH_INFORMATION
+{
+	ULONG Size;
+	ULONG Version;
+	ULONG Flags;
+	ULONG ElementsCount;
+	PMY_AUTH_ELEMENT* Elements;
+	PCWSTR Description;
+	FILETIME CreationTime;
+	GUID Guid;
+} MY_AUTH_INFORMATION, * PMY_AUTH_INFORMATION;
+
+#define FVE_GET_PASSWORD_FLAGS 0x00080002
+
+
 NTSTATUS
 NTAPI
 RtlGetVersion(
@@ -882,6 +906,7 @@ PWSTR ICOA_Output(void);
 PWSTR ICOD_Output(void);
 PWSTR NANO_Output(void);
 PWSTR KLS_Output(void);
+PWSTR FVE_Output(void);
 
 
 static const WCHAR BOM = 0xfeff;

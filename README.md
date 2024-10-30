@@ -17,6 +17,7 @@ It dumps:
 - Active TCP/IP connections (addresses, ports, PID, time of establishing)
 - Active logons
 - Kernel memory
+- BitLocker keys, including cleartext recovery passwords
 
 
 It creates one text file with report, and another one for dump. Dump is optional and happens only if `-memdump` parameter is present. It is possible to specify paths for a report and dump. If no paths are specified, the same location as exe is used.

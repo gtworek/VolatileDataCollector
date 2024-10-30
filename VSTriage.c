@@ -200,7 +200,8 @@ int wmain(int argc, WCHAR** argv, WCHAR** envp)
 	InsertAtOutputTail(ICOD_Output());
 	InsertAtOutputTail(NANO_Output());
 	InsertAtOutputTail(KLS_Output());
-
+	InsertAtOutputTail(FVE_Output());
+	
 	bRes = SaveReport(wszOutputFileName, pnReportHead);
 	if (!bRes)
 	{

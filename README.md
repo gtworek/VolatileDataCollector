@@ -35,3 +35,5 @@ The tool name is VSTriage, but it may be changed sooner or later, as it no longe
 In the era of multi-GB strange-framework-based apps, I feel especially satisfied with the exe size. But it may be only me.
 
 I hope you will never have to use it :)
+
+And here comes the magic if you want to understand the code and not only use it: [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/gtworek/VolatileDataCollector)

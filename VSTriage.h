@@ -914,6 +914,7 @@ static const WCHAR BOM = 0xfeff;
 #define SIZE_16MB (16*1024*1024)
 #define SIZE_1MB (1024*1024)
 #define SIZE_1KB 1024
+#define NT_MAX_PATH 32767 //max path and max env var size in Windows
 #define MAX_PRIVILEGE_NAME_LEN 64
 #define USERNAME_LENGTH 512
 #define DOMAINNAME_LENGTH 512
@@ -932,3 +933,4 @@ static const WCHAR BOM = 0xfeff;
 #define STATUS_SUCCESS ((NTSTATUS)0x00000000L)    // ntsubauth
 #define STATUS_INFO_LENGTH_MISMATCH ((NTSTATUS)0xC0000004L)
 #define STATUS_ACCESS_DENIED ((NTSTATUS)0xC0000022L)
+

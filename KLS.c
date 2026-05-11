@@ -32,8 +32,10 @@ BOOL KLSMain(void)
 
 	for (ULONG i = 0; i < ulSessionCount; i++)
 	{
-		WCHAR wszLine[SIZE_1KB] = {0};
-		WCHAR wszPart[SIZE_1KB] = {0};
+		
+		WCHAR wszLine[SIZE_1KB] = { 0 };
+		WCHAR wszPart[SIZE_1KB] = { 0 };
+		
 		PSECURITY_LOGON_SESSION_DATA pslsaData = NULL;
 		status = LsaGetLogonSessionData(&plLUID[i], &pslsaData);
 		if (STATUS_SUCCESS != status)
@@ -62,42 +64,56 @@ BOOL KLSMain(void)
 			StringCchPrintfW(wszPart, ARRAYSIZE(wszPart), L"\tSession: %i\r\n", pslsaData->Session);
 			StringCchCatW(wszLine, ARRAYSIZE(wszLine), wszPart);
 
+			//ARM64 fix - %wZ failed, so copy the data to local buffers and print with %s
+			WCHAR wszLogonDomain[SIZE_1KB] = { 0 };
+			WCHAR wszUserName[SIZE_1KB] = { 0 };
+			memcpy_s(wszLogonDomain, sizeof(wszLogonDomain), pslsaData->LogonDomain.Buffer, pslsaData->LogonDomain.Length);
+			memcpy_s(wszUserName, sizeof(wszUserName), pslsaData->UserName.Buffer, pslsaData->UserName.Length);
+
 
 			PWSTR pwszSid = NULL;
 			ConvertSidToStringSidW(pslsaData->Sid, &pwszSid);
+
 			StringCchPrintfW(
 				wszPart,
 				ARRAYSIZE(wszPart),
-				L"\tUser: %wZ\\%wZ (%s)\r\n",
-				pslsaData->LogonDomain,
-				pslsaData->UserName,
+				L"\tUser: %s\\%s (%s)\r\n",
+				wszLogonDomain,
+				wszUserName,
 				pwszSid);
+
 			StringCchCatW(wszLine, ARRAYSIZE(wszLine), wszPart);
 			if (NULL != pwszSid)
 			{
 				LocalFree(pwszSid);
 			}
 
+			WCHAR wszAuthPackage[SIZE_1KB] = { 0 };
+			memcpy_s(wszAuthPackage, sizeof(wszAuthPackage), pslsaData->AuthenticationPackage.Buffer, pslsaData->AuthenticationPackage.Length);
 
 			StringCchPrintfW(
 				wszPart,
 				ARRAYSIZE(wszPart),
-				L"\tAuthentication: %wZ:%s\r\n",
-				pslsaData->AuthenticationPackage,
+				L"\tAuthentication: %s:%s\r\n",
+				wszAuthPackage,
 				pwszLogonTypes[pslsaData->LogonType]);
 			StringCchCatW(wszLine, ARRAYSIZE(wszLine), wszPart);
 
 
+			WCHAR wszLsaData[SIZE_1KB] = { 0 };
 			if (0 != pslsaData->LogonServer.Length)
 			{
-				StringCchPrintfW(wszPart, ARRAYSIZE(wszPart), L"\tLogonServer: %wZ\r\n", pslsaData->LogonServer);
+				memcpy_s(wszLsaData, sizeof(wszLsaData), pslsaData->LogonServer.Buffer, pslsaData->LogonServer.Length);
+				StringCchPrintfW(wszPart, ARRAYSIZE(wszPart), L"\tLogonServer: %s\r\n", wszLsaData);
 				StringCchCatW(wszLine, ARRAYSIZE(wszLine), wszPart);
 			}
 
 
 			if (0 != pslsaData->DnsDomainName.Length)
 			{
-				StringCchPrintfW(wszPart, ARRAYSIZE(wszPart), L"\tDnsDomainName: %wZ\r\n", pslsaData->DnsDomainName);
+				ZeroMemory(wszLsaData, sizeof(wszLsaData));
+				memcpy_s(wszLsaData, sizeof(wszLsaData), pslsaData->DnsDomainName.Buffer, pslsaData->DnsDomainName.Length);
+				StringCchPrintfW(wszPart, ARRAYSIZE(wszPart), L"\tDnsDomainName: %s\r\n", wszLsaData);
 				StringCchCatW(wszLine, ARRAYSIZE(wszLine), wszPart);
 			}
 
@@ -106,7 +122,9 @@ BOOL KLSMain(void)
 			{
 				if (0 != wcslen(pslsaData->Upn.Buffer)) //it may happen!
 				{
-					StringCchPrintfW(wszPart, ARRAYSIZE(wszPart), L"\tUpn: %wZ\r\n", pslsaData->Upn);
+					ZeroMemory(wszLsaData, sizeof(wszLsaData));
+					memcpy_s(wszLsaData, sizeof(wszLsaData), pslsaData->Upn.Buffer, pslsaData->Upn.Length);
+					StringCchPrintfW(wszPart, ARRAYSIZE(wszPart), L"\tUpn: %s\r\n", wszLsaData);
 					StringCchCatW(wszLine, ARRAYSIZE(wszLine), wszPart);
 				}
 			}
@@ -145,6 +163,7 @@ BOOL KLSMain(void)
 			LsaFreeReturnBuffer(pslsaData);
 		}
 		StringCchCatW(pwszKLSBuf, stKLSBufSize / sizeof(WCHAR), wszLine);
+		//wprintf(L"%s", wszLine);
 	}
 
 	LsaFreeReturnBuffer(plLUID); //ignore result

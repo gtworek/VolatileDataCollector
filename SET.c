@@ -118,7 +118,7 @@ PWSTR SETEnvBlockToDiffString(PVOID pEnvBlock)
 		}
 		for (DWORD j = 0; j < dwOwnEnvEntryCount; j++)
 		{
-			if (0 != wcslen(pvOwnEnvArray[i].pwszVarName))
+			if (0 != wcslen(pvOwnEnvArray[j].pwszVarName))
 			{
 				continue; //var has a name, skip now
 			}

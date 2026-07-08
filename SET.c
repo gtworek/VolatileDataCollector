@@ -89,8 +89,14 @@ VOID SETCleanEnvArray(PVARENTRY pVarEntry, DWORD dwEntryCount)
 	}
 	for (DWORD i = 0; i < dwEntryCount; i++)
 	{
-		LocalFree(pVarEntry[i].pwszVarName);
-		LocalFree(pVarEntry[i].pwszVarValue);
+		if (pVarEntry[i].pwszVarName)
+		{
+			LocalFree(pVarEntry[i].pwszVarName);
+		}
+		if (pVarEntry[i].pwszVarValue)
+		{
+			LocalFree(pVarEntry[i].pwszVarValue);
+		}
 	}
 	LocalFree(pVarEntry);
 }

@@ -184,6 +184,9 @@ BOOL HNDMain(void)
 					}
 				}
 			}
+			//will leak for hung threads, but we must afford it.
+			CloseHandle(hDuplicatedHandle);
+			LocalFree(thsParam);
 		}
 		else
 		{
@@ -191,8 +194,6 @@ BOOL HNDMain(void)
 			//TerminateThread(hThNtQueryObjectHandle, 0);
 			wprintf(L".");
 		}
-		CloseHandle(hDuplicatedHandle);
-		LocalFree(thsParam);
 	}
 
 	PWSTR pwszSorted = NULL;

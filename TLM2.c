@@ -519,7 +519,7 @@ BOOL TLM2Main(void)
 		{
 			PWSTR pwszModules;
 			pwszModules = TLM2GetProcessModules(hProcess);
-			StringCchCatW(pwszTlm2Buf, stTlm2BufSize, pwszModules);
+			StringCchCatW(pwszTlm2Buf, stTlm2BufSize / sizeof(WCHAR), pwszModules);
 			LocalFree(pwszModules);
 			CloseHandle(hProcess);
 		}
@@ -533,7 +533,7 @@ BOOL TLM2Main(void)
 				L"%i:\r\n\t(ERROR %i)\r\n",
 				pdwProcArr[i],
 				dwLastError);
-			StringCchCatW(pwszTlm2Buf, stTlm2BufSize, pwszError);
+			StringCchCatW(pwszTlm2Buf, stTlm2BufSize / sizeof(WCHAR), pwszError);
 			LocalFree(pwszError);
 		}
 		ResizeWcharBufIfNeeded(&pwszTlm2Buf, &stTlm2BufSize);

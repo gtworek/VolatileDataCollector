@@ -260,7 +260,7 @@ GetDnsCachedData(
 	}
 	DnsRecordListFree(DnsRecordHead, TRUE);
 
-	StringCchCatW(pwszICODBuf, stICODBufSize, pwszAllRecordsDataBuf);
+	StringCchCatW(pwszICODBuf, stICODBufSize / sizeof(WCHAR), pwszAllRecordsDataBuf);
 
 	LocalFree(pwszAllRecordsDataBuf);
 	LocalFree(pwszAllRecordsWorkBuf);

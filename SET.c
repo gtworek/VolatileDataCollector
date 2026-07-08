@@ -414,7 +414,7 @@ BOOL SETMain(void)
 	HRESULT hResult;
 
 	//own env
-	StringCchCatW(pwszSetBuf, stSetBufSize, L"-1:\tGetCurrentProcess().GetEnvironmentStringsW()\r\n");
+	StringCchCatW(pwszSetBuf, stSetBufSize / sizeof(WCHAR), L"-1:\tGetCurrentProcess().GetEnvironmentStringsW()\r\n");
 	PWSTR pwszOwnEnv;
 	pwszOwnEnv = SETGetOwnEnv();
 	hResult = StringCchCatW(pwszSetBuf, stSetBufSize / sizeof(WCHAR), pwszOwnEnv);
@@ -473,7 +473,7 @@ BOOL SETMain(void)
 				L"%i:\t%s\r\n",
 				pdwProcArr[i],
 				pwszProcessImage);
-			StringCchCatW(pwszSetBuf, stSetBufSize, pwszProcessStr);
+			StringCchCatW(pwszSetBuf, stSetBufSize / sizeof(WCHAR), pwszProcessStr);
 			LocalFree(pwszProcessStr);
 
 			if (pwszProcessEnv)
@@ -492,7 +492,7 @@ BOOL SETMain(void)
 					L"\t(Cannot get environment)\r\n");
 			}
 
-			StringCchCatW(pwszSetBuf, stSetBufSize, pwszProcessEnv);
+			StringCchCatW(pwszSetBuf, stSetBufSize / sizeof(WCHAR), pwszProcessEnv);
 
 			LocalFree(pwszProcessImage);
 			LocalFree(pwszProcessEnv);
@@ -512,10 +512,10 @@ BOOL SETMain(void)
 				L"%i:\t(ERROR: %i, OpenProcess)\r\n",
 				pdwProcArr[i],
 				dwLastError);
-			StringCchCatW(pwszSetBuf, stSetBufSize, pwszError);
+			StringCchCatW(pwszSetBuf, stSetBufSize / sizeof(WCHAR), pwszError);
 
 			StringCchPrintfW(pwszError, LocalSize(pwszError) / sizeof(WCHAR), L"\t(Cannot get environment)\r\n");
-			StringCchCatW(pwszSetBuf, stSetBufSize, pwszError);
+			StringCchCatW(pwszSetBuf, stSetBufSize / sizeof(WCHAR), pwszError);
 			LocalFree(pwszError);
 		}
 		ResizeWcharBufIfNeeded(&pwszSetBuf, &stSetBufSize);

@@ -121,10 +121,10 @@ VOID FVEBin2StrW(PWSTR pwszBuffer, PBYTE pbData)
 		uBlock *= 11;
 
 		StringCchPrintfW(pwszTemp, _ARRAYSIZE(pwszTemp), L"%06d", uBlock);
-		StringCchCatW(pwszBuffer, LocalSize(pwszBuffer), pwszTemp);
+		StringCchCatW(pwszBuffer, LocalSize(pwszBuffer) / sizeof(WCHAR), pwszTemp);
 		if (j < 7)
 		{
-			StringCchCatW(pwszBuffer, LocalSize(pwszBuffer), L"-");
+			StringCchCatW(pwszBuffer, LocalSize(pwszBuffer) / sizeof(WCHAR), L"-");
 		}
 	}
 }
